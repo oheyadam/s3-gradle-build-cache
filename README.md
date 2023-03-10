@@ -8,7 +8,7 @@ In your `settings.gradle.kts` file add the following
 
 ```kotlin
 plugins {
-  id("travelperk.build.gradle.s3buildcache) version "1.0-beta01"
+  id("travelperk.build.gradle.s3buildcache") version "1.0-beta01"
 }
 
 import travelperk.build.gradle.s3buildcache.S3BuildCache
@@ -36,7 +36,7 @@ If you are using Groovy, then you should do the following:
 
 ```groovy
 plugins {
-  id("travelperk.build.gradle.s3buildcache) version "1.0-beta01"
+  id("travelperk.build.gradle.s3buildcache") version "1.0-beta01"
 }
 
 import travelperk.build.gradle.s3buildcache.ExportedS3Credentials
