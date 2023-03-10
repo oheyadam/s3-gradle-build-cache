@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
   id("com.gradle.plugin-publish") version "1.1.0"
   id("org.jetbrains.kotlin.jvm") version "1.8.10"
@@ -36,8 +34,12 @@ gradlePlugin {
 group = "travelperk.build.gradle.s3buildcache"
 version = "1.0-beta01"
 
-kotlin {
-  jvmToolchain(JavaLanguageVersion.of(17).asInt())
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(11))
+  }
+  withJavadocJar()
+  withSourcesJar()
 }
 
 testing {
