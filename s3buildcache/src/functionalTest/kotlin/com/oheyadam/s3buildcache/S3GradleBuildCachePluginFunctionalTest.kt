@@ -1,4 +1,4 @@
-package travelperk.build.gradle.s3buildcache
+package com.oheyadam.s3buildcache
 
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.Rule
@@ -6,7 +6,7 @@ import org.junit.rules.TemporaryFolder
 import kotlin.test.Test
 
 /**
- * A simple functional test for the 'travelperk.build.gradle.s3buildcache.S3BuildCache' plugin.
+ * A simple functional test for the 'oheyadam.build.gradle.s3buildcache.S3BuildCache' plugin.
  */
 class S3GradleBuildCachePluginFunctionalTest {
 
@@ -19,10 +19,10 @@ class S3GradleBuildCachePluginFunctionalTest {
   @Test fun `can run tasks task`() {
     getSettingsFile().writeText(
       """
-        import travelperk.build.gradle.s3buildcache.S3BuildCache
+        import com.oheyadam.s3buildcache.S3BuildCache
         
         plugins {
-          id("travelperk.build.gradle.s3buildcache")
+          id("com.oheyadam.s3buildcache")
         }
         buildCache {
           remote(S3BuildCache::class) {

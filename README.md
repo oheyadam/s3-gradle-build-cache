@@ -4,16 +4,16 @@ An implementation of the Gradle Remote Cache that's backed by AWS S3 buckets.
 
 ## Using the plugin
 
-In your `settings.gradle.kts` file add the following
+In your `settings.gradle(.kts)` file add the following
 
 ```kotlin
 plugins {
-  id("travelperk.build.gradle.s3buildcache") version "1.0-beta01"
+  id("com.oheyadam.s3buildcache") version "1.0-beta01"
 }
 
-import travelperk.build.gradle.s3buildcache.S3BuildCache
-import travelperk.build.gradle.s3buildcache.S3BuildCacheServiceFactory
-import travelperk.build.gradle.s3buildcache.ExportedS3Credentials
+import com.oheyadam.s3buildcache.S3BuildCache
+import com.oheyadam.s3buildcache.S3BuildCacheServiceFactory
+import com.oheyadam.s3buildcache.ExportedS3Credentials
 
 buildCache {
   registerBuildCacheService(S3BuildCache::class, S3BuildCacheServiceFactory::class)
@@ -36,12 +36,12 @@ If you are using Groovy, then you should do the following:
 
 ```groovy
 plugins {
-  id("travelperk.build.gradle.s3buildcache") version "1.0-beta01"
+  id("com.oheyadam.s3buildcache") version "1.0-beta01"
 }
 
-import travelperk.build.gradle.s3buildcache.ExportedS3Credentials
-import travelperk.build.gradle.s3buildcache.S3BuildCache
-import travelperk.build.gradle.s3buildcache.S3BuildCacheServiceFactory
+import com.oheyadam.s3buildcache.ExportedS3Credentials
+import com.oheyadam.s3buildcache.S3BuildCache
+import com.oheyadam.s3buildcache.S3BuildCacheServiceFactory
 
 buildCache {
   registerBuildCacheService(S3BuildCache, S3BuildCacheServiceFactory)

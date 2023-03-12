@@ -15,23 +15,23 @@ dependencies {
 }
 
 pluginBundle {
-  website = "https://github.com/travelperk/s3-gradle-build-cache"
-  vcsUrl = "https://github.com/travelperk/s3-gradle-build-cache"
+  website = "https://github.com/oheyadam/s3-gradle-build-cache"
+  vcsUrl = "https://github.com/oheyadam/s3-gradle-build-cache"
   tags = listOf("buildcache", "s3", "caching")
 }
 
 gradlePlugin {
   plugins {
     create("s3buildcache") {
-      id = "travelperk.build.gradle.s3buildcache"
-      displayName = "Gradle AWS S3 Build Cache Plugin"
+      id = "com.oheyadam.s3buildcache"
+      displayName = "Gradle AWS S3 Remote Cache Plugin"
       description = "Gradle remote cache backed by AWS S3"
-      implementationClass = "travelperk.build.gradle.s3buildcache.S3GradleBuildCachePlugin"
+      implementationClass = "com.oheyadam.s3buildcache.S3GradleBuildCachePlugin"
     }
   }
 }
 
-group = "travelperk.build.gradle.s3buildcache"
+group = "com.oheyadam.s3buildcache"
 version = "1.0-beta01"
 
 java {

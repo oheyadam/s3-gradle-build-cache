@@ -1,4 +1,4 @@
-package travelperk.build.gradle.s3buildcache
+package com.oheyadam.s3buildcache
 
 import org.gradle.caching.BuildCacheService
 import org.gradle.caching.BuildCacheServiceFactory

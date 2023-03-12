@@ -1,4 +1,4 @@
-package travelperk.build.gradle.s3buildcache
+package com.oheyadam.s3buildcache
 
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings

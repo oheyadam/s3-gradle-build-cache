@@ -1,4 +1,4 @@
-package travelperk.build.gradle.s3buildcache
+package com.oheyadam.s3buildcache
 
 import org.junit.Test
 
@@ -114,7 +114,7 @@ class S3StorageServiceTest {
 
   companion object {
 
-    private const val REGION = "your-bucket-region"
-    private const val BUCKET_NAME = "your-bucket-name"
+    private const val REGION = "us-east-1"
+    private const val BUCKET_NAME = "tk-tooling-gradle-build-cache"
   }
 }

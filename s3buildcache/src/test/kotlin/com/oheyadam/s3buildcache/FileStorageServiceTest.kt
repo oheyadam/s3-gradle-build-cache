@@ -1,4 +1,4 @@
-package travelperk.build.gradle.s3buildcache
+package com.oheyadam.s3buildcache
 
 import org.junit.Test
 
@@ -69,7 +69,7 @@ class FileStorageServiceTest {
 
   companion object {
     // Project ID
-    private const val PROJECT_ID = "travelperk"
+    private const val PROJECT_ID = "com/oheyadam"
 
     // The Bucket Name
     private const val BUCKET_NAME = "cache"
