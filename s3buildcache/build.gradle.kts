@@ -23,7 +23,7 @@ pluginBundle {
 gradlePlugin {
   plugins {
     create("s3buildcache") {
-      id = "com.oheyadam.s3buildcache"
+      id = "io.github.oheyadam.s3buildcache"
       displayName = "Gradle AWS S3 Remote Cache Plugin"
       description = "Gradle remote cache backed by AWS S3"
       implementationClass = "com.oheyadam.s3buildcache.S3GradleBuildCachePlugin"
@@ -31,7 +31,7 @@ gradlePlugin {
   }
 }
 
-group = "com.oheyadam.s3buildcache"
+group = "io.github.oheyadam.s3buildcache"
 version = "1.0-beta01"
 
 java {
