@@ -19,7 +19,8 @@ class S3BuildCacheServiceFactory : BuildCacheServiceFactory<S3BuildCache> {
       .config("reducedRedundancy", "${buildCache.reducedRedundancy}")
       .config("isPushSupported", "${buildCache.isPush}")
       .config("isEnabled", "${buildCache.isEnabled}")
-      .config("usingExportedCredentials", "${buildCache.credentials is ExportedS3Credentials}")
+      .config("sizeThreshold", "${buildCache.sizeThreshold}")
+      .config("credentialsType", "${buildCache.credentials}")
 
     val service = S3BuildCacheService(
       region = buildCache.region,
@@ -27,6 +28,7 @@ class S3BuildCacheServiceFactory : BuildCacheServiceFactory<S3BuildCache> {
       isPush = buildCache.isPush,
       isEnabled = buildCache.isEnabled,
       reducedRedundancy = buildCache.reducedRedundancy,
+      sizeThreshold = buildCache.sizeThreshold,
       credentials = buildCache.credentials
     )
     service.validateConfiguration()

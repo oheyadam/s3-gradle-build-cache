@@ -26,6 +26,11 @@ interface StorageService : Closeable {
   val isEnabled: Boolean
 
   /**
+   * The size limit on blobs that we can upload/download
+   * */
+  val sizeThreshold: Long
+
+  /**
    * Loads an entity from Storage.
    * @param cacheKey is the unique key that can identify a resource that needs to be loaded.
    * @return an [InputStream] if there is a storage-hit. `null` if it's a storage-miss.

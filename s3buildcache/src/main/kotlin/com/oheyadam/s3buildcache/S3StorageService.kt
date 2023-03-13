@@ -20,8 +20,8 @@ class S3StorageService(
   override val bucketName: String,
   override val isPush: Boolean,
   override val isEnabled: Boolean,
+  override val sizeThreshold: Long,
   private val reducedRedundancy: Boolean,
-  private val sizeThreshold: Long = BLOB_SIZE_THRESHOLD,
   credentials: S3Credentials
 ) : StorageService {
 
@@ -98,7 +98,6 @@ class S3StorageService(
 
   companion object {
 
-    private const val BLOB_SIZE_THRESHOLD = 50 * 1024 * 1024L
     private val logger by lazy {
       Logging.getLogger("AwsS3StorageService")
     }

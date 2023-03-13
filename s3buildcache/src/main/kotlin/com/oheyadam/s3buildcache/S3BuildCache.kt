@@ -25,6 +25,11 @@ abstract class S3BuildCache : AbstractBuildCache() {
   var reducedRedundancy: Boolean = true
 
   /**
+   * The size limit on blobs that we can upload/download
+   * */
+  var sizeThreshold: Long = 50 * 1024 * 1024
+
+  /**
    * The type of credentials to use to connect to AWS.
    */
   var credentials: S3Credentials = DefaultS3Credentials

@@ -23,6 +23,7 @@ class S3BuildCacheService(
   isPush: Boolean,
   isEnabled: Boolean,
   reducedRedundancy: Boolean,
+  sizeThreshold: Long,
   inTestMode: Boolean = false
 ) : BuildCacheService {
 
@@ -31,7 +32,8 @@ class S3BuildCacheService(
       region = region,
       bucketName = bucketName,
       isPush = isPush,
-      isEnabled = isEnabled
+      isEnabled = isEnabled,
+      sizeThreshold = sizeThreshold
     )
   } else {
     S3StorageService(
@@ -39,6 +41,7 @@ class S3BuildCacheService(
       bucketName = bucketName,
       isPush = isPush,
       isEnabled = isEnabled,
+      sizeThreshold = sizeThreshold,
       reducedRedundancy = reducedRedundancy,
       credentials = credentials
     )

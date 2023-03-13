@@ -11,17 +11,18 @@ internal class FileSystemStorageService(
   override val region: String,
   override val bucketName: String,
   override val isPush: Boolean,
-  override val isEnabled: Boolean
+  override val isEnabled: Boolean,
+  override val sizeThreshold: Long
 ) : StorageService {
 
   private val location = Files.createTempDirectory("tmp$region$bucketName").toFile()
 
   override fun load(cacheKey: String): InputStream? {
-    if (!isEnabled) {
-      return null
-    }
+    if (!isEnabled) return null
 
     val file = File(location, cacheKey)
+    if (file.length() > sizeThreshold) return null
+
     return if (file.exists() && file.isFile) {
       file.inputStream()
     } else {
@@ -30,15 +31,12 @@ internal class FileSystemStorageService(
   }
 
   override fun store(cacheKey: String, contents: ByteArray): Boolean {
-    if (!isEnabled) {
-      return false
-    }
-
-    if (!isPush) {
-      return false
-    }
+    if (!isEnabled) return false
+    if (!isPush) return false
 
     val file = File(location, cacheKey)
+    if (file.length() > sizeThreshold) return false
+
     val output = file.outputStream()
     output.use {
       output.write(contents)
@@ -47,13 +45,8 @@ internal class FileSystemStorageService(
   }
 
   override fun delete(cacheKey: String): Boolean {
-    if (!isEnabled) {
-      return false
-    }
-
-    if (!isPush) {
-      return false
-    }
+    if (!isEnabled) return false
+    if (!isPush) return false
 
     val file = File(location, cacheKey)
     return file.delete()

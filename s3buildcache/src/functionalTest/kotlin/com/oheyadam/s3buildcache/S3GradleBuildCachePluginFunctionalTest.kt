@@ -22,12 +22,13 @@ class S3GradleBuildCachePluginFunctionalTest {
         import com.oheyadam.s3buildcache.S3BuildCache
         
         plugins {
-          id("com.oheyadam.s3buildcache")
+          id("io.github.oheyadam.s3buildcache")
         }
         buildCache {
           remote(S3BuildCache::class) {
               region = "foo"
               bucketName = "bar"
+              sizeThreshold = 0
           }
         }
         """.trimIndent()

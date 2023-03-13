@@ -15,11 +15,12 @@ class S3StorageServiceTest {
       credentials = DefaultS3Credentials,
       isPush = true,
       isEnabled = true,
+      sizeThreshold = SIZE_THRESHOLD,
       reducedRedundancy = true
     )
     storageService.use {
       val cacheKey = "test-store.txt"
-      val contents = "The quick brown fox jumped over the lazy dog"
+      val contents = "The quick brown fox jumps over the lazy dog"
       val result = storageService.store(cacheKey, contents.toByteArray(Charsets.UTF_8))
       assert(result)
       storageService.delete(cacheKey)
@@ -33,11 +34,12 @@ class S3StorageServiceTest {
       credentials = DefaultS3Credentials,
       isPush = true,
       isEnabled = true,
+      sizeThreshold = SIZE_THRESHOLD,
       reducedRedundancy = true
     )
     storageService.use {
       val cacheKey = "test-load.txt"
-      val contents = "The quick brown fox jumped over the lazy dog"
+      val contents = "The quick brown fox jumps over the lazy dog"
       val bytes = contents.toByteArray(Charsets.UTF_8)
       assert(storageService.store(cacheKey, bytes))
       val input = storageService.load(cacheKey)!!
@@ -54,11 +56,12 @@ class S3StorageServiceTest {
       credentials = DefaultS3Credentials,
       isPush = false,
       isEnabled = true,
+      sizeThreshold = SIZE_THRESHOLD,
       reducedRedundancy = true
     )
     storageService.use {
       val cacheKey = "test-store-no-push.txt"
-      val contents = "The quick brown fox jumped over the lazy dog"
+      val contents = "The quick brown fox jumps over the lazy dog"
       val result = storageService.store(cacheKey, contents.toByteArray(Charsets.UTF_8))
       assert(!result)
     }
@@ -71,6 +74,7 @@ class S3StorageServiceTest {
       credentials = DefaultS3Credentials,
       isPush = true,
       isEnabled = true,
+      sizeThreshold = SIZE_THRESHOLD,
       reducedRedundancy = true
     )
     val readOnlyStorageService = S3StorageService(
@@ -79,12 +83,13 @@ class S3StorageServiceTest {
       credentials = DefaultS3Credentials,
       isPush = false,
       isEnabled = true,
+      sizeThreshold = SIZE_THRESHOLD,
       reducedRedundancy = true
     )
     storageService.use {
       readOnlyStorageService.use {
         val cacheKey = "test-load-no-push.txt"
-        val contents = "The quick brown fox jumped over the lazy dog"
+        val contents = "The quick brown fox jumps over the lazy dog"
         val bytes = contents.toByteArray(Charsets.UTF_8)
         assert(storageService.store(cacheKey, bytes))
         val input = readOnlyStorageService.load(cacheKey)!!
@@ -102,11 +107,12 @@ class S3StorageServiceTest {
       credentials = DefaultS3Credentials,
       isPush = true,
       isEnabled = false,
+      sizeThreshold = SIZE_THRESHOLD,
       reducedRedundancy = true
     )
     storageService.use {
       val cacheKey = "test-store-disabled.txt"
-      val contents = "The quick brown fox jumped over the lazy dog"
+      val contents = "The quick brown fox jumps over the lazy dog"
       val result = storageService.store(cacheKey, contents.toByteArray(Charsets.UTF_8))
       assert(!result)
     }
@@ -114,7 +120,8 @@ class S3StorageServiceTest {
 
   companion object {
 
-    private const val REGION = "us-east-1"
-    private const val BUCKET_NAME = "tk-tooling-gradle-build-cache"
+    private const val REGION = "region"
+    private const val BUCKET_NAME = "bucket-name"
+    private const val SIZE_THRESHOLD = 50 * 1024 * 1024L
   }
 }
