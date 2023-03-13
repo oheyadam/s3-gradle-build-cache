@@ -8,7 +8,7 @@ In your `settings.gradle(.kts)` file add the following
 
 ```kotlin
 plugins {
-  id("com.oheyadam.s3buildcache") version "1.0-beta01"
+  id("io.github.oheyadam.s3buildcache") version "1.0-beta01"
 }
 
 import com.oheyadam.s3buildcache.S3BuildCache
@@ -37,7 +37,7 @@ If you are using Groovy, then you should do the following:
 
 ```groovy
 plugins {
-  id("com.oheyadam.s3buildcache") version "1.0-beta01"
+  id("io.github.oheyadam.s3buildcache") version "1.0-beta01"
 }
 
 import com.oheyadam.s3buildcache.ExportedS3Credentials
