@@ -12,6 +12,8 @@ dependencies {
   implementation(platform("software.amazon.awssdk:bom:2.20.18"))
   implementation("software.amazon.awssdk:s3")
   implementation("software.amazon.awssdk:sso")
+  // This has to be on the classpath to be able to read credentials. See: https://github.com/aws/aws-sdk-java/issues/1324
+  runtimeOnly("software.amazon.awssdk:sts")
 }
 
 pluginBundle {
