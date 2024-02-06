@@ -25,3 +25,9 @@ class ExportedS3Credentials(
   val awsAccessKeyId: String,
   val awsSecretKey: String
 ) : S3Credentials
+
+
+/**
+ * Use specific AWS profile when authenticating to AWS.
+ */
+class ProfileS3Credentials(val awsProfile: String): S3Credentials

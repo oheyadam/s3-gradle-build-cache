@@ -26,9 +26,9 @@ buildCache {
 }
 ```
 
-- `region`, `bucketName` are required.
+- `region` and `bucketName` are required.
 - `sizeThreshold` defaults to 50 MB, but can be changed to control the size limit of the blobs you want to upload/download.
-- `credentials` defaults to `DefaultS3Credentials`, but can also be set to `ExportedS3Credentials`, or `SpecificCredentialsProvider`.
+- `credentials` defaults to `DefaultS3Credentials`, but can also be set to `ProfileS3Credentials`, `ExportedS3Credentials`, or `SpecificCredentialsProvider`.
 - `isPush` defaults to `false`.
 
 ---
