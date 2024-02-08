@@ -87,9 +87,13 @@ class S3StorageService(
   }
 
   override fun validateConfiguration() {
-    val buckets = client.listBuckets().buckets()
-    if (buckets.none { bucket -> bucket.name() == bucketName }) {
-      throw Exception("Bucket $bucketName under project $region cannot be found or it is not accessible using the provided credentials")
+    try {
+      val buckets = client.listBuckets()?.buckets()
+      if (buckets?.none { bucket -> bucket.name() == bucketName } == true) {
+        throw Exception("Bucket $bucketName under project $region cannot be found or it is not accessible using the provided credentials")
+      }
+    } catch (e: Exception) {
+      logger.warn("Couldn't validate S3 client config. This may be due to a connection error")
     }
   }
 
@@ -104,10 +108,10 @@ class S3StorageService(
     }
 
     private fun clientOptions(credentials: AwsCredentialsProvider, region: String): S3Client {
-      return S3Client.builder()
-        .credentialsProvider(credentials)
-        .region(Region.of(region))
-        .build()
+        return S3Client.builder()
+          .credentialsProvider(credentials)
+          .region(Region.of(region))
+          .build()
     }
 
     private fun credentials(s3Credentials: S3Credentials): AwsCredentialsProvider {
@@ -129,7 +133,8 @@ class S3StorageService(
       return try {
         val inputStream = client.getObject(request)
         val blob = inputStream.response() ?: return null
-        if (blob.contentLength() > sizeThreshold) {
+        // Skip if larger than threshold & return empty entries as a cache miss
+        if (blob.contentLength() > sizeThreshold || blob.contentLength() == 0L) {
           logger.info("Cache item ${request.key()} size is ${blob.contentLength()} and it exceeds $sizeThreshold. Will skip loading")
           inputStream.abort()
           null
@@ -157,7 +162,12 @@ class S3StorageService(
     }
 
     private fun delete(client: S3Client, request: DeleteObjectRequest): Boolean {
-      return client.deleteObject(request).deleteMarker()
+      return try {
+        client.deleteObject(request).deleteMarker()
+      } catch (e: Exception) {
+        logger.debug("Unable to delete $request", e)
+        false
+      }
     }
   }
 }

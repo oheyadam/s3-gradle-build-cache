@@ -34,7 +34,7 @@ gradlePlugin {
 }
 
 group = "io.github.oheyadam.s3buildcache"
-version = "1.0-beta03"
+version = "1.0-beta05"
 
 java {
   toolchain {
