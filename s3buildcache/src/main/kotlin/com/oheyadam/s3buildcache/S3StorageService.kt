@@ -1,6 +1,7 @@
 package com.oheyadam.s3buildcache
 
 import org.gradle.api.logging.Logging
+import org.gradle.internal.impldep.com.amazonaws.AmazonClientException
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider
@@ -87,14 +88,18 @@ class S3StorageService(
   }
 
   override fun validateConfiguration() {
-    val buckets = client?.listBuckets()?.buckets()
-    if (buckets?.none { bucket -> bucket.name() == bucketName } == true) {
-      throw Exception("Bucket $bucketName under project $region cannot be found or it is not accessible using the provided credentials")
+    try {
+      val buckets = client.listBuckets()?.buckets()
+      if (buckets?.none { bucket -> bucket.name() == bucketName } == true) {
+        throw Exception("Bucket $bucketName under project $region cannot be found or it is not accessible using the provided credentials")
+      }
+    } catch (e: AmazonClientException) {
+      logger.error("Couldn't validate S3 client config. This may be due to a connection error")
     }
   }
 
   override fun close() {
-    client?.close()
+    client.close()
   }
 
   companion object {
@@ -103,15 +108,11 @@ class S3StorageService(
       Logging.getLogger("AwsS3StorageService")
     }
 
-    private fun clientOptions(credentials: AwsCredentialsProvider, region: String): S3Client? {
-      return try {
-        S3Client.builder()
+    private fun clientOptions(credentials: AwsCredentialsProvider, region: String): S3Client {
+        return S3Client.builder()
           .credentialsProvider(credentials)
           .region(Region.of(region))
           .build()
-      } catch (e: Exception) {
-        null
-      }
     }
 
     private fun credentials(s3Credentials: S3Credentials): AwsCredentialsProvider {
@@ -126,11 +127,10 @@ class S3StorageService(
     }
 
     private fun load(
-      client: S3Client?,
+      client: S3Client,
       request: GetObjectRequest,
       sizeThreshold: Long,
     ): InputStream? {
-      if (client == null) return null
       return try {
         val inputStream = client.getObject(request)
         val blob = inputStream.response() ?: return null
@@ -149,11 +149,10 @@ class S3StorageService(
     }
 
     private fun store(
-      client: S3Client?,
+      client: S3Client,
       request: PutObjectRequest,
       contents: ByteArray
     ): Boolean {
-      if (client == null) return false
       return try {
         client.putObject(request, RequestBody.fromBytes(contents))
         true
@@ -163,8 +162,7 @@ class S3StorageService(
       }
     }
 
-    private fun delete(client: S3Client?, request: DeleteObjectRequest): Boolean {
-      if (client == null) return false
+    private fun delete(client: S3Client, request: DeleteObjectRequest): Boolean {
       return client.deleteObject(request).deleteMarker()
     }
   }
