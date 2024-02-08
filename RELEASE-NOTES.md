@@ -1,5 +1,9 @@
 # Release notes for S3 backed Gradle Remote Cache
 
+## 1.0-beta05
+
+- Handle more use-cases where users are offline
+
 ## 1.0-beta04
 
 - Handle use-cases where users are offline
