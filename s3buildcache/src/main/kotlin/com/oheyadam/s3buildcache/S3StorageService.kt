@@ -87,14 +87,14 @@ class S3StorageService(
   }
 
   override fun validateConfiguration() {
-    val buckets = client.listBuckets().buckets()
-    if (buckets.none { bucket -> bucket.name() == bucketName }) {
+    val buckets = client?.listBuckets()?.buckets()
+    if (buckets?.none { bucket -> bucket.name() == bucketName } == true) {
       throw Exception("Bucket $bucketName under project $region cannot be found or it is not accessible using the provided credentials")
     }
   }
 
   override fun close() {
-    client.close()
+    client?.close()
   }
 
   companion object {
@@ -103,11 +103,15 @@ class S3StorageService(
       Logging.getLogger("AwsS3StorageService")
     }
 
-    private fun clientOptions(credentials: AwsCredentialsProvider, region: String): S3Client {
-      return S3Client.builder()
-        .credentialsProvider(credentials)
-        .region(Region.of(region))
-        .build()
+    private fun clientOptions(credentials: AwsCredentialsProvider, region: String): S3Client? {
+      return try {
+        S3Client.builder()
+          .credentialsProvider(credentials)
+          .region(Region.of(region))
+          .build()
+      } catch (e: Exception) {
+        null
+      }
     }
 
     private fun credentials(s3Credentials: S3Credentials): AwsCredentialsProvider {
@@ -122,14 +126,16 @@ class S3StorageService(
     }
 
     private fun load(
-      client: S3Client,
+      client: S3Client?,
       request: GetObjectRequest,
       sizeThreshold: Long,
     ): InputStream? {
+      if (client == null) return null
       return try {
         val inputStream = client.getObject(request)
         val blob = inputStream.response() ?: return null
-        if (blob.contentLength() > sizeThreshold) {
+        // Skip if larger than threshold & return empty entries as a cache miss
+        if (blob.contentLength() > sizeThreshold || blob.contentLength() == 0L) {
           logger.info("Cache item ${request.key()} size is ${blob.contentLength()} and it exceeds $sizeThreshold. Will skip loading")
           inputStream.abort()
           null
@@ -143,10 +149,11 @@ class S3StorageService(
     }
 
     private fun store(
-      client: S3Client,
+      client: S3Client?,
       request: PutObjectRequest,
       contents: ByteArray
     ): Boolean {
+      if (client == null) return false
       return try {
         client.putObject(request, RequestBody.fromBytes(contents))
         true
@@ -156,7 +163,8 @@ class S3StorageService(
       }
     }
 
-    private fun delete(client: S3Client, request: DeleteObjectRequest): Boolean {
+    private fun delete(client: S3Client?, request: DeleteObjectRequest): Boolean {
+      if (client == null) return false
       return client.deleteObject(request).deleteMarker()
     }
   }
